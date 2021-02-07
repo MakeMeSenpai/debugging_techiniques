@@ -65,7 +65,8 @@ def pizza_order_form():
 @app.route('/order', methods=['POST'])
 def pizza_order_submit():
     order_name = request.form.get('name')
-    pizza_size_str = request.form.get('size')
+    # size to sizes
+    pizza_size_str = request.form.get('sizes')
     crust_type_str = request.form.get('crust_type')
     toppings_list = request.form.get('toppings')
 
@@ -76,7 +77,9 @@ def pizza_order_submit():
     print(pizza.size)
 
     for topping_str in ToppingType:
-        pizza.toppings.append(PizzaTopping(topping=topping_str))
+        # added  if statement to check only toppings that match
+        if topping_str in toppings_list:
+            pizza.toppings.append(PizzaTopping(topping=topping_str))
 
     db.session.add(pizza)
 
